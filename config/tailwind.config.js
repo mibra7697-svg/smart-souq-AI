@@ -1,13 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/*/.{js,jsx,ts,tsx}",
     "./public/index.html"
   ],
   theme: {
     extend: {
       colors: {
+        // تم تصحيح القسم أدناه لضمان وجود درجة أساسية (DEFAULT) ودرجات فرعية
         primary: {
+          DEFAULT: '#3b82f6', // هذه القيمة هي التي يبحث عنها الكود لمنع الشاشة البيضاء
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',
