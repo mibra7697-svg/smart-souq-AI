@@ -1,12 +1,13 @@
 import React from 'react';
-import Hero from '../components/Hero';
-import DynamicFeatures from '../components/DynamicFeatures';
-import EnhancedEcommercePlatform from '../components/EnhancedEcommercePlatform';
-import MobileComparison from '../components/MobileComparison';
-import TechNews from '../components/TechNews';
-import EconomyNews from '../components/EconomyNews';
-import AISection from '../components/AISection';
-import EnhancedFooter from '../components/EnhancedFooter';
+// إضافة .jsx لضمان أن Vercel يجد الملفات المباشرة ولا يبحث عن مجلدات
+import Hero from '../components/hero.jsx'; 
+import DynamicFeatures from '../components/DynamicFeatures.jsx';
+import EnhancedEcommercePlatform from '../components/EnhancedEcommercePlatform.jsx';
+import MobileComparison from '../components/MobileComparison.jsx';
+import TechNews from '../components/TechNews.jsx';
+import EconomyNews from '../components/EconomyNews.jsx';
+import AISection from '../components/AISection.jsx';
+import EnhancedFooter from '../components/EnhancedFooter.jsx';
 
 const Home = () => {
   const styles = {
