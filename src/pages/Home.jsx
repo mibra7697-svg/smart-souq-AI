@@ -2,7 +2,7 @@ import React from 'react';
 
 // استيراد المكونات مع إضافة .jsx لضمان التعرف عليها في بيئة لينكس (Vercel)
 // وتطابق حالة الأحرف مع ما هو موجود في مجلد components الخاص بك
-import Hero from '../components/Hero.jsx';
+import Hero from '../components/EnhancedHero.jsx';
 import DynamicFeatures from '../components/DynamicFeatures.jsx';
 import EcommercePlatform from '../components/EcommercePlatform.jsx';
 import MobileComparison from '../components/MobileComparison.jsx';
