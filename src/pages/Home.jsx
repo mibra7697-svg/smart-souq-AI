@@ -1,60 +1,44 @@
 import React from 'react';
 
-// استيراد المكونات مع إضافة .jsx لضمان التعرف عليها في بيئة لينكس (Vercel)
-// وتطابق حالة الأحرف مع ما هو موجود في مجلد components الخاص بك
-import Hero from '../components/EnhancedHero.jsx';
-import DynamicFeatures from '../components/DynamicFeatures.jsx';
-import EcommercePlatform from '../components/EcommercePlatform.jsx';
-import MobileComparison from '../components/MobileComparison.jsx';
-import TechNews from '../components/TechNews.jsx';
-import EconomyNews from '../components/EconomyNews.jsx';
-import AISection from '../components/AISection.jsx';
-import EnhancedFooter from '../components/EnhancedFooter.jsx';
+// جميع الاستيرادات مطابقة 100% لأسماء الملفات الحقيقية (بدون .jsx ضروري في Vite)
+import EnhancedHero from '../components/EnhancedHero';
+import DynamicFeatures from '../components/DynamicFeatures';
+import EnhancedEcommercePlatform from '../components/EnhancedEcommercePlatform'; // ← الأفضل استخدام النسخة المعززة
+import MobileComparison from '../components/MobileComparison';
+import TechNews from '../components/TechNews';
+import EconomyNews from '../components/EconomyNews';
+import AISection from '../components/AISection';
+import EnhancedFooter from '../components/EnhancedFooter';
 
 const Home = () => {
-  const styles = {
-    page: {
-      minHeight: '100vh',
-      backgroundColor: '#ffffff', // يمكنك تعديل اللون حسب هوية سمارت سوق
-    },
-    sectionSpacer: {
-      height: '4rem',
-    },
-  };
-
   return (
-    <div style={styles.page}>
-      {/* القسم الرئيسي */}
-      <Hero />
+    <div className="min-h-screen bg-white">
+      <main>
+        <EnhancedHero />
 
-      {/* قسم المميزات الديناميكية */}
-      <DynamicFeatures />
+        <DynamicFeatures />
 
-      <div style={styles.sectionSpacer} />
+        <div className="h-16 md:h-20" />
 
-      {/* منصة التجارة الإلكترونية المعززة */}
-      <EcommercePlatform />
+        <EnhancedEcommercePlatform />
 
-      <div style={styles.sectionSpacer} />
+        <div className="h-16 md:h-20" />
 
-      {/* مقارنة الجوالات الذكية */}
-      <MobileComparison />
+        <MobileComparison />
 
-      <div style={styles.sectionSpacer} />
+        <div className="h-16 md:h-20" />
 
-      {/* قسم أخبار التكنولوجيا والذكاء الاصطناعي */}
-      <TechNews />
-      
-      <div style={styles.sectionSpacer} />
-      
-      <EconomyNews />
+        <TechNews />
 
-      <div style={styles.sectionSpacer} />
+        <div className="h-16 md:h-20" />
 
-      {/* قسم الـ AI المتطور */}
-      <AISection />
+        <EconomyNews />
 
-      {/* تذييل الصفحة المعزز */}
+        <div className="h-16 md:h-20" />
+
+        <AISection />
+      </main>
+
       <EnhancedFooter />
     </div>
   );
