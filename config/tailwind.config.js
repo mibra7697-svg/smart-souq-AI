@@ -7,9 +7,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // تم تصحيح القسم أدناه لضمان وجود درجة أساسية (DEFAULT) ودرجات فرعية
+        // تم تحديث الهيكل لضمان عدم حدوث خطأ Destructuring
         primary: {
-          DEFAULT: '#3b82f6', // هذه القيمة هي التي يبحث عنها الكود لمنع الشاشة البيضاء
+          DEFAULT: '#3b82f6',
+          main: '#3b82f6',    // بعض القوالب تبحث عن كلمة main
+          primary: '#3b82f6', // وبعضها يبحث عن تكرار الكلمة primary بالداخل
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',
@@ -20,6 +22,11 @@ module.exports = {
           700: '#1d4ed8',
           800: '#1e40af',
           900: '#1e3a8a',
+        },
+        // إضافة secondary كاحتياط لأن الخطأ قد ينتقل إليه لاحقاً
+        secondary: {
+          DEFAULT: '#ffffff',
+          main: '#ffffff',
         }
       },
       fontFamily: {
@@ -35,6 +42,7 @@ module.exports = {
     },
   },
   plugins: [],
-  rtl: true,
+  // تأكد من أن نسخة Tailwind لديك تدعم هذه الخصائص مباشرة
+  // إذا استمر الخطأ، يفضل تعطيل rtl مؤقتاً للتجربة
   darkMode: 'class',
 }
