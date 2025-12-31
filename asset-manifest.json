@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/smart-souq-AI/static/css/main.7a673e64.css",
+    "main.js": "/smart-souq-AI/static/js/main.12cbf91c.js",
+    "static/js/453.99989ea6.chunk.js": "/smart-souq-AI/static/js/453.99989ea6.chunk.js",
+    "index.html": "/smart-souq-AI/index.html",
+    "main.7a673e64.css.map": "/smart-souq-AI/static/css/main.7a673e64.css.map",
+    "main.12cbf91c.js.map": "/smart-souq-AI/static/js/main.12cbf91c.js.map",
+    "453.99989ea6.chunk.js.map": "/smart-souq-AI/static/js/453.99989ea6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7a673e64.css",
+    "static/js/main.12cbf91c.js"
+  ]
+}
