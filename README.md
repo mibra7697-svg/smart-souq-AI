@@ -1,62 +1,47 @@
-# 🚀 SmartSouq - منصة التسويق بالعمولة المتكاملة
+# 🔵 Smart Souq (سوق سمارت)
+**The First Solana-Powered Affiliate Marketplace in the MENA Region.**
 
-## 📊 ملخص استثماري
+Smart Souq is a next-generation brokerage and affiliate platform designed to bridge the gap between traditional commerce and Web3. We solve the "payout friction" by using the Solana blockchain to provide instant, low-fee commission withdrawals in USDC.
 
-**SmartSouq** هي منصة رائدة في مجال التسويق بالعمولة تربط بين البائعين، المسوقين، والمشترين في نظام متكامل وآمن. المنصة مصممة لتحقيق أعلى معدلات التحويل وتوفير تجربة مستخدم فريدة.
+## 🚀 Key Features
+- **Hybrid Web2/Web3 Auth:** Traditional JWT-based login with optional Solana wallet linking.
+- **On-Chain Payouts:** Instant USDC withdrawals via Solana network (Devnet ready).
+- **Arabic-First UX:** Fully localized Arabic interface with RTL support.
+- **Security First:** Robust validation using `PublicKey.isOnCurve` and protected API routes.
+- **Complete Dashboard:** Comprehensive management for products, orders, and commissions.
 
-### 💰 النموذج الاقتصادي
-- **عمولة المنصة**: 5-15% على كل عملية بيع
-- **عمولة المسوقين**: 5-20% حسب فئة المنتج
-- **إيرادات متعددة**: عمولات، اشتراكات، خدمات قيمة مضافة 
- 
-### 📈 إحصائيات الأداء (بيانات تجريبية للعرض)
-- **50+** طلب مبيعات تجريبية خلال 90 يوم
-- **6** منتجات تجريبية بمعدلات عمولة متنوعة
-- **2** مسوق تجريبي يحققون إيرادات افتراضية
-- **75%** معدل تحويل تجريبي للطلبات المكتملة
-- **SAR 12,500+** حجم مبيعات تجريبي افتراضي
+## 🛠️ Tech Stack
+- **Frontend:** Next.js 14, Tailwind CSS, Mantine UI, Solana Wallet Adapter.
+- **Backend:** Node.js, Express, TypeScript.
+- **Database:** PostgreSQL with Prisma ORM.
+- **Blockchain:** Solana Web3.js (`@solana/web3.js`).
 
-## 🎯 القيمة المقدمة
+## 📦 Project Structure
+- `/frontend`: The Next.js web application.
+- `/backend`: Express API with Prisma logic.
+- `/docs`: Business plan, technical stack, and deployment guides.
 
-### للبائعين
-- وصول إلى شبكة مسوقين محترفين
-- إدارة متكاملة للمنتجات والمخزون
-- تحليلات أداء مفصلة
-- تحصيل آمن للمدفوعات
+## 🏁 Quick Start
+1. **Clone & Install:**
+   ```bash
+   git clone [your-repo-link]
+   cd smart-souq-project
+   npm install
+   ```
+2. **Environment Setup:**
+   Configure your `.env` in both `backend` and `frontend` folders (DB URL, JWT Secret).
+3. **Run Development:**
+   ```bash
+   # Backend
+   cd backend && npm run dev
+   # Frontend
+   cd frontend && npm run dev
+   ```
 
-### للمسوقين
-- عمولات تنافسية تصل إلى 20%
-- أدوات تتبع وتقارير متقدمة
-- دفع منتظم عبر multiple channels
-- دعم فني متكامل
+## 🗺️ Roadmap
+- [x] Solana Wallet Integration.
+- [x] Arabic Localization & UX Polish.
+- [ ] Smart Contract Escrow for buyer protection.
+- [ ] Loyalty NFT program for top-performing affiliates.
 
-### للمشترين
-- تجربة تسوق آمنة وسهلة
-- منتجات عالية الجودة من بائعين موثوقين
-- خصومات وحملات ترويجية مستمرة 
- 
- ## Tech Stack 
- - Backend: Node.js, Express, Prisma, PostgreSQL 
- - Frontend: Next.js 14, React, Tailwind 
- - DevOps: Docker, Nginx 
- - AI (optional): Ollama + Llama models 
- 
- ## Setup 
- See docs/SETUP_GUIDE.md 
- 
- ## API Documentation 
- See docs/API_DOCS.md 
- 
- ## Status 
- This project is under active development.
-
-## 📸 Screenshots
-> 📸 Screenshots coming soon
-
-## 🚀 Live Demo
-**Demo Credentials:**
-- **Admin**: admin@smartsouq.com / admin123
-- **Seller**: techstore@smartsouq.com / seller123  
-- **Affiliate**: marketer1@smartsouq.com / affiliate123
-
-*Note: هذه بيانات دخول تجريبية للعرض فقط*
+Created with passion by Ibrahim Yaseen Mrhij - Prompt Engineer & Full-stack Developer.
