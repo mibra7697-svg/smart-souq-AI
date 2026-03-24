@@ -1,0 +1,1 @@
+module.exports = { apps: [{ name: "smart-souq", script: "frontend/.next/standalone/server.js" }] };

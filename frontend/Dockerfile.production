@@ -1,0 +1,87 @@
+FROM node:20-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copy shared config
+COPY tsconfig.base.json ./
+
+# Set working directory for frontend
+WORKDIR /app/frontend
+
+# Install dependencies based on the preferred package manager
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci && npm cache clean --force
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/tsconfig.base.json ./
+WORKDIR /app/frontend
+
+# Add build arguments for Next.js/Vite environment variables
+ARG NEXT_PUBLIC_API_URL
+ARG ALPHAVANTAGE_API_KEY
+ARG NEWSDATA_API_KEY
+ARG SUPABASE_URL
+ARG SUPABASE_ANON_KEY
+
+# Set them as environment variables during build time
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV ALPHAVANTAGE_API_KEY=$ALPHAVANTAGE_API_KEY
+ENV NEWSDATA_API_KEY=$NEWSDATA_API_KEY
+ENV SUPABASE_URL=$SUPABASE_URL
+ENV SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+
+COPY --from=deps /app/frontend/node_modules ./node_modules
+COPY frontend/ .
+
+# Fix tsconfig.json extends path for Docker context if needed
+# and ensure tsconfig.base.json is available in the expected location
+RUN cp /app/tsconfig.base.json ./tsconfig.base.json && \
+    sed -i 's|../tsconfig.base.json|./tsconfig.base.json|' tsconfig.json
+
+# Build the application
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+RUN apk add --no-cache curl
+WORKDIR /app/frontend
+
+ENV NODE_ENV production
+# Re-define them for runtime if needed (standalone mode might need them)
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV ALPHAVANTAGE_API_KEY=$ALPHAVANTAGE_API_KEY
+ENV NEWSDATA_API_KEY=$NEWSDATA_API_KEY
+ENV SUPABASE_URL=$SUPABASE_URL
+ENV SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+
+# Copy built application
+COPY --from=builder /app/frontend/public ./public
+COPY --from=builder /app/frontend/.next/standalone ./
+COPY --from=builder /app/frontend/.next/static ./.next/static
+
+# Create necessary directories
+RUN mkdir -p .next/cache && chown -R nodejs:nodejs /app/frontend
+
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000 || exit 1
+
+# Start the application
+CMD ["node", "server.js"]

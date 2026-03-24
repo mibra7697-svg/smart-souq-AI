@@ -1,0 +1,23 @@
+{
+  "output": {
+    "filePath": "brokerage-system-context.md",
+    "style": "markdown",
+    "removeComments": false,
+    "removeEmptyLines": false
+  },
+  "include": ["**/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".git/**",
+      "**/playwright-report/**",
+      "project_structure.txt",
+      "package-lock.json",
+      "yarn.lock"
+    ]
+  }
+}

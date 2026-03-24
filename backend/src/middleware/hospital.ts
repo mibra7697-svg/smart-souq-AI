@@ -1,0 +1,3 @@
+export const nurse = (req: any, res: any, next: any) => { console.log('🧪 الممرض: رصد حركة على ' + req.url); next(); };
+export const doctor = (req: any, res: any, next: any) => { if (req.method === 'POST' && !req.body.prompt) return res.status(400).json({ message: '👨‍⚕️ الدكتور: الحجة ضعيفة!' }); next(); };
+export const firefighter = (err: any, req: any, res: any, next: any) => { console.error('👨‍🚒 حريق!'); res.status(500).json({ message: 'الإطفائي أخمد الخطأ' }); };

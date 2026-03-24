@@ -1,0 +1,12 @@
+import 'express';
+
+declare module 'express' {
+  interface Request {
+    user?: {
+      userId: string;
+      role: string;
+      [key: string]: any;
+    };
+    userId?: string;
+  }
+}

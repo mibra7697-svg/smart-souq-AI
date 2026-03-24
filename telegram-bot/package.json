@@ -1,0 +1,14 @@
+{
+  "name": "smartsouq-telegram-bot",
+  "version": "1.0.0",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "dev": "nodemon src/bot.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.12.2",
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3"
+  }
+}

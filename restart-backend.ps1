@@ -1,0 +1,1 @@
+pnpm --filter backend nodemon src/index.ts

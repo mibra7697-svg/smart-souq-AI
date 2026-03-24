@@ -1,0 +1,1 @@
+Get-Content backend/logs/app.log -Wait

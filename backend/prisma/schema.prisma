@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Connection Pooling Note:
+  // For production, ensure your DATABASE_URL includes connection pooling parameters:
+  // e.g., postgresql://user:password@host:port/db?connection_limit=10&pool_timeout=10
+  // Or use a connection pooler like PgBouncer (Supabase Transaction Mode).
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  name      String?
+  solanaAddress String?
+  payoutPreference PayoutPreference @default(BANK)
+  role      UserRole @default(BUYER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  wallet        Wallet?       @relation("PrimaryWallet")
+  refreshTokens RefreshToken[]
+  payoutRequests PayoutRequest[]
+  buyerOrders   Order[]       @relation("BuyerOrders")
+  sellerProducts Product[] @relation("SellerProducts")
+  commissions   Commission[]
+  affiliateLinks AffiliateLink[]
+  affiliateOrders Order[]       @relation("AffiliateOrders")
+
+  @@map("users")
+  @@index([email])
+  @@index([username])
+}
+
+model AffiliateLink {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  clicks    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("affiliate_links")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+
+  @@map("refresh_tokens")
+  @@index([userId])
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation("PrimaryWallet", fields: [userId], references: [id])
+  availableBalance Decimal @default(0.00) @db.Decimal(10, 2)
+  pendingBalance   Decimal @default(0.00) @db.Decimal(10, 2)
+  currency  String   @default("SAR")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  transactions WalletTransaction[]
+
+  @@map("wallets")
+}
+
+model WalletTransaction {
+  id          String   @id @default(cuid())
+  walletId    String
+  wallet      Wallet   @relation(fields: [walletId], references: [id])
+  amount      Decimal  @db.Decimal(10, 2)
+  type        TransactionType
+  status      TransactionStatus @default(PENDING)
+  referenceId String?  // e.g. Order ID or Payout Request ID
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@map("wallet_transactions")
+  @@index([walletId])
+}
+
+model PayoutRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  amount      Decimal  @db.Decimal(10, 2)
+  status      PayoutStatus @default(PENDING)
+  method      String   // e.g., "bank_transfer", "paypal"
+  details     Json?    // Bank details or account info
+  processedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("payout_requests")
+  @@index([userId])
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  buyerId       String
+  buyer         User     @relation("BuyerOrders", fields: [buyerId], references: [id])
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  amount        Decimal  @db.Decimal(10, 2)
+  status        OrderStatus @default(PENDING)
+  
+  // Affiliate relation
+  affiliateId   String?
+  affiliate     User?    @relation("AffiliateOrders", fields: [affiliateId], references: [id])
+  
+  commissionId  String?  @unique
+  commission    Commission? @relation(fields: [commissionId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("orders")
+  @@index([buyerId])
+  @@index([productId])
+  @@index([affiliateId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  sellerId    String
+  seller      User     @relation("SellerProducts", fields: [sellerId], references: [id])
+  isActive    Boolean  @default(true)
+  stock       Int      @default(0)
+  
+  // Commission settings per product
+  commissionRate Decimal? @db.Decimal(5, 2) // Override global rate if set
+  
+  orders      Order[]
+  commissions Commission[]
+  affiliateLinks AffiliateLink[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("products")
+  @@index([sellerId])
+  @@index([isActive])
+  @@index([price])
+}
+
+model Commission {
+  id          String   @id @default(cuid())
+  amount      Decimal  @db.Decimal(10, 2)
+  rate        Decimal  @db.Decimal(5, 2) // The percentage used
+  status      CommissionStatus @default(PENDING)
+  
+  // Relations
+  userId      String   // The affiliate who earned this
+  user        User     @relation(fields: [userId], references: [id])
+  
+  orderId     String?  @unique
+  order       Order?
+  
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  paidAt      DateTime?
+
+  @@map("commissions")
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum UserRole {
+  ADMIN
+  SELLER
+  BUYER
+  AFFILIATE
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  COMMISSION
+  PURCHASE
+  REFUND
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum PayoutStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum CommissionStatus {
+  PENDING
+  APPROVED
+  PAID
+  CANCELLED
+}
+
+enum PayoutPreference {
+  BANK
+  SOLANA
+}

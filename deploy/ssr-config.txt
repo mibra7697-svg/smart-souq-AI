@@ -1,0 +1,1 @@
+SSR enabled for Next.js
